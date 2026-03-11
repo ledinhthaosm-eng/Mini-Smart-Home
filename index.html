@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMART HOME</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+ </head>
+  <body>
+  <div class="header">
+    🏠 DASHBOARD SMART HOME ESP32 - WEBSOCKET + MQTT
+  </div>
+
+<div class="dashboard">
+  <div class="room">
+    <p><b>LIVING ROOM</b></p>
+    <div class="device">
+      <p>💡 LIGHT:
+        <span id="text_living_light">---</span></p>
+      <button class="device-btn"
+        data-device="living_light"
+        id="btn_living_light">
+        TURN ON
+      </button>
+    </div>
+
+    <div class="device">
+      <p>🌀 FAN:
+        <span id="text_living_fan">---</span></p>
+      <button class="device-btn"
+        data-device="living_fan"
+        id="btn_living_fan">
+        TURN ON
+      </button>
+    </div>
+
+  </div>
+
+  <div class="room">
+    <p><b>BED ROOM</b></p>
+    <div class="device">
+      <p>💡LIGHT:
+        <span id="text_bed_light">---</span></p>
+      <button class="device-btn"
+        data-device="bed_light"
+        id="btn_bed_light">
+        TURN ON
+      </button>
+    </div>
+  </div>
+
+  <div class="room">
+    <p><b>KITCHEN</b></p>
+    <div class="device">
+      <p>💡LIGHT:
+        <span id="text_kitchen_light">---</span></p>
+      <button class="device-btn"
+        data-device="kitchen_light"
+        id="btn_kitchen_light">
+        TURN ON
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="device">
+    <p><b>🌡 Temperature: </b>
+    <span id="living_temp">-- °C</span>
+  </div>
+
+  <div class="device">
+    <p><b>💧 Humidity: </b>
+    <span id="living_humi">-- %</span>
+  </div>
+</div>
+
+    <div class="chart-box">
+      <canvas id="tempChart"></canvas>
+    </div>
+
+<script src="mqtt.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
