@@ -73,12 +73,39 @@ body{
     transform:scale(1.05);
   }
 
-  .chart-box{
-    background:white;
-    margin:20px auto;
-    padding:20px;
-    border-radius:12px;
-    max-width:1000px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+ .gauge-box{
+    position: relative;
+    width:260px;
+    height:200px;
+    text-align:center;
   }
 
+  .gauge-box canvas{
+    width:200px;
+    height:120px;
+  }
+
+  .gauge-box p{
+    font-size:20px;
+    font-weight:bold;
+    text-align:center;
+  }
+
+  .gauge-min{
+    position:absolute;
+    top:150px;
+    left:10px;
+    font-size:14px;
+    font-weight:bold;
+  }
+
+  .gauge-max{
+    position:absolute;
+    top:150px;
+    left:170px;
+    font-size:14px;
+    font-weight:bold;
+  }
+
+
+  
