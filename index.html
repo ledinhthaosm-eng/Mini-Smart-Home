@@ -78,12 +78,30 @@
   </div>
 </div>
 
-    <div class="chart-box">
-      <canvas id="tempChart"></canvas>
-    </div>
+<div class="container">
+
+  <div class="gauge-box">
+    <canvas id="tempGauge"></canvas>
+    <div class="gauge-min">0</div>
+    <div class="gauge-max">50</div>
+
+    <p id="tempValue">-- °C</p>
+  </div>
+
+  <div class="gauge-box">
+    <canvas id="humiGauge"></canvas>
+    <div class="gauge-min">0</div>
+    <div class="gauge-max">100</div>
+
+    <p id="humiValue">-- %</p>
+  </div>
+
+</div>
+   
 
 <script src="mqtt.min.js"></script>
 <script src="script.js"></script>
 
 </body>
 </html>
+
