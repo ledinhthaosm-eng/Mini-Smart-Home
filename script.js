@@ -1,5 +1,7 @@
 
 let states={}
+let tempGauge;
+let humiGauge;
 
 // ===== Kết nối MQTT =====
 const client = mqtt.connect(
@@ -43,12 +45,13 @@ client.on("message",function(topic,message){
 
   if(topic=="home/living/temp"){
     document.getElementById("living_temp").innerText=msg+" °C"
-    addTemp(msg)
+    //addTemp(msg)
+	updateTempGauge(parseFloat(msg))
   }
 
   if(topic=="home/living/humi"){
     document.getElementById("living_humi").innerText=msg+" %"
-
+    updateHumiGauge(parseFloat(msg))
   }
 
 });
@@ -93,35 +96,65 @@ function sendDevice(device, state){
       };
     });
 
-// CHART
-let ctx=document.getElementById("tempChart")
-
-let chart=new Chart(ctx,{
-  type:"line",
+window.onload = function(){
+// Java Script tạo gauge
+// ===== TEMP GAUGE 3 MÀU =====
+tempGauge = new Chart(document.getElementById("tempGauge"),{
+  type:"doughnut",
   data:{
-    labels:[],
     datasets:[{
-      label:"Living Room Temperature",
-      data:[],
-      borderColor:"red",
-      fill:false
+      data:[0,50],
+      backgroundColor:["red","#eee"],
+      borderWidth:0
     }]
+  },
+  options:{
+    rotation:-90,
+    circumference:180,
+    cutout:"70%",
+    plugins:{legend:{display:false}}
   }
 })
 
-function addTemp(temp){
+// ===== HUMI GAUGE =====
+humiGauge = new Chart(document.getElementById("humiGauge"),{
+  type:"doughnut",
+  data:{
+    datasets:[{
+      data:[0,100],
+      backgroundColor:["blue","#eee"],
+      borderWidth:0
+    }]
+  },
+  options:{
+    rotation:-90,
+    circumference:180,
+    cutout:"70%",
+    plugins:{legend:{display:false}}
+  }
+})
 
-let time=new Date().toLocaleTimeString()
-
-chart.data.labels.push(time)
-chart.data.datasets[0].data.push(temp)
-
-if(chart.data.labels.length>20){
-  chart.data.labels.shift()
-  chart.data.datasets[0].data.shift()
 }
-chart.update()
 
+// Hàm cập nhật dữ liệu gauge
+function updateTempGauge(temp){
+
+  if(!tempGauge) return;
+  document.getElementById("tempValue").innerText=temp+" °C"
+
+  tempGauge.data.datasets[0].data=[temp,50-temp]
+  tempGauge.update()
 }
+
+function updateHumiGauge(humi){
+
+   if(!humiGauge) return;
+  document.getElementById("humiValue").innerText=humi+" %"
+
+  humiGauge.data.datasets[0].data=[humi,100-humi]
+  humiGauge.update()
+}
+
+
 
 
