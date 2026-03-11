@@ -47,8 +47,8 @@ client.on("message",function(topic,message){
   }
 
   if(topic=="home/living/humi"){
-    document.getElementById("living_humi").innerText=msg+" °C"
-    addTemp(msg)
+    document.getElementById("living_humi").innerText=msg+" %"
+
   }
 
 });
@@ -123,4 +123,5 @@ if(chart.data.labels.length>20){
 chart.update()
 
 }
+
 
