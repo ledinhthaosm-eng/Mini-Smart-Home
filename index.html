@@ -11,7 +11,12 @@
  </head>
   <body>
   <div class="header">
-    🏠 DASHBOARD SMART HOME ESP32 - WEBSOCKET + MQTT
+    🏠 DASHBOARD SMART HOME ESP32 - WEBSOCKET - MQTT
+  </div>
+
+  <div class="clock-box">
+    <div class="clock" id="clock">--:--:--</div>
+    <div class="date" id="date">----</div>
   </div>
 
 <div class="dashboard">
@@ -84,6 +89,7 @@
     <canvas id="tempGauge"></canvas>
     <div class="gauge-min">0</div>
     <div class="gauge-max">50</div>
+    <div class="gauge-label">Nhiệt độ</div>
 
     <p id="tempValue">-- °C</p>
   </div>
@@ -92,16 +98,26 @@
     <canvas id="humiGauge"></canvas>
     <div class="gauge-min">0</div>
     <div class="gauge-max">100</div>
+    <div class="gauge-label">Độ ẩm</div>
 
     <p id="humiValue">-- %</p>
   </div>
 
 </div>
-   
+
+<div class="door-container">
+  <h2>Door</h2>
+
+  <div class="doorFrame">
+    <div class="door" id="door"></div>
+  </div>
+
+  <button class="open" onclick="openDoor()">OPEN</button>
+  <button class="close" onclick="closeDoor()">CLOSE</button>
+</div>
 
 <script src="mqtt.min.js"></script>
 <script src="script.js"></script>
 
 </body>
 </html>
-
