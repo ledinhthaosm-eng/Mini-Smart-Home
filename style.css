@@ -27,7 +27,7 @@ body{
         justify-content: center;
         gap: 40px;          /* khoảng cách giữa 2 phần tử */
         flex-wrap: wrap;   /* cho phép rớt dòng khi màn hình nhỏ */
-        margin-top: 30px;
+        margin-top: 10px;
       }
 
   .room{
@@ -73,7 +73,8 @@ body{
     transform:scale(1.05);
   }
 
- .gauge-box{
+
+  .gauge-box{
     position: relative;
     width:260px;
     height:200px;
@@ -81,7 +82,7 @@ body{
   }
 
   .gauge-box canvas{
-    width:200px;
+    width:260px;
     height:120px;
   }
 
@@ -106,6 +107,78 @@ body{
     font-size:14px;
     font-weight:bold;
   }
-
-
   
+  .gauge-label{
+    text-align:center;
+    font-size:16px;
+    font-weight:bold;
+    margin-top:5px;
+    color:#333;
+ }
+
+.clock-box{
+    background:white;
+    display:inline-block;
+    padding:12px 25px;
+    border-radius:12px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.15);
+    margin-bottom:10px;
+  }
+
+  .clock{
+    font-size:24px;
+    font-weight:bold;
+  }
+
+  .date{
+    font-size:16px;
+    color:#666;
+  }
+
+  button{
+    width:120px;
+    height:50px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    margin:10px;
+    cursor:pointer;
+  }
+
+  .open{background:#4CAF50;}
+  .close{background:#f44336;}
+
+  .doorFrame{
+    width:80px;
+    height:100px;
+    border:4px solid #444;
+    margin:auto;
+    perspective:400px;
+  }
+
+  .door{
+    width:80px;
+    height:100px;
+    background:#8B4513;
+    transform-origin:left;
+    transition:transform 0.6s;
+  }
+
+  .door.open{
+    transform:rotateY(-70deg);
+  }
+
+/* Khung điều khiển */
+.door-container{
+  width:300px;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+
+  /* chỉnh vị trí */
+  margin-left:100px;     /* căn lề trái */
+  margin-top:40px;
+  text-align:center;
+}
+
