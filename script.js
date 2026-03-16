@@ -16,10 +16,12 @@ const client = mqtt.connect(
 client.on("connect",function(){
   console.log("Connected MQTT");
   client.subscribe("home/living/light/state");
+  client.subscribe("home/living/fan/state");
   client.subscribe("home/bed/light/state");
   client.subscribe("home/kitchen/light/state");
-  client.subscribe("home/living/temp");
-  client.subscribe("home/living/humi");
+  client.subscribe("home/living/temperature");
+  client.subscribe("home/living/humidity");
+  client.subscribe("home/door/state");
 
 });
 
@@ -33,6 +35,12 @@ client.on("message",function(topic,message){
     updateUI("living_light", msg=="ON");  // trong hàm click button
   }
 
+  if(topic=="home/living/fan/state"){
+    states["living_fan"] = msg=="ON";    
+    updateUI("living_fan", msg=="OFF");  
+  }
+
+
   if(topic=="home/bed/light/state"){
     states["bed_light"] = msg=="ON";
     updateUI("bed_light", msg=="ON")
@@ -43,16 +51,33 @@ client.on("message",function(topic,message){
     updateUI("kitchen_light", msg=="ON")
   }
 
-  if(topic=="home/living/temp"){
+  if(topic=="home/living/temperature"){
     document.getElementById("living_temp").innerText=msg+" °C"
-    //addTemp(msg)
-	updateTempGauge(parseFloat(msg))
+    // addTemp(parseFloat(msg))
+
+    updateTempGauge(parseFloat(msg))
   }
 
-  if(topic=="home/living/humi"){
+  if(topic=="home/living/humidity"){
     document.getElementById("living_humi").innerText=msg+" %"
+
     updateHumiGauge(parseFloat(msg))
   }
+
+  if(topic=="home/door/state"){
+  let door = document.getElementById("door");
+
+  if(msg=="OPEN"){
+    door.classList.add("open");
+    door.classList.remove("close");
+  }
+
+  if(msg=="CLOSE"){
+    door.classList.add("close");
+    door.classList.remove("open");
+  }
+
+}
 
 });
 
@@ -74,6 +99,9 @@ function sendDevice(device, state){
 
   if(device=="living_light")
     client.publish("home/living/light/set",msg);
+
+  if(device=="living_fan")
+    client.publish("home/living/fan/set",msg);
 
   if(device=="bed_light")
     client.publish("home/bed/light/set",msg);
@@ -98,7 +126,7 @@ function sendDevice(device, state){
 
 window.onload = function(){
 // Java Script tạo gauge
-// ===== TEMP GAUGE 3 MÀU =====
+// ===== TEMP GAUGE =====
 tempGauge = new Chart(document.getElementById("tempGauge"),{
   type:"doughnut",
   data:{
@@ -156,5 +184,32 @@ function updateHumiGauge(humi){
 }
 
 
+// Cập nhật thời gian - realtime
+  function updateDateTime(){
+    let now = new Date();
 
+    let h = now.getHours().toString().padStart(2,'0');
+    let m = now.getMinutes().toString().padStart(2,'0');
+    let s = now.getSeconds().toString().padStart(2,'0');
+
+    let day = now.getDate().toString().padStart(2,'0');
+    let month = (now.getMonth()+1).toString().padStart(2,'0');
+    let year = now.getFullYear();
+
+    document.getElementById("clock").innerHTML = h + ":" + m + ":" + s;
+    document.getElementById("date").innerHTML = day + "/" + month + "/" + year;
+  }
+
+  setInterval(updateDateTime,1000);
+  updateDateTime();
+
+// Hàm gửi lệnh mở cửa
+function openDoor(){
+  client.publish("home/door","OPEN");
+}
+
+// Hàm gửi lệnh đóng cửa
+function closeDoor(){
+  client.publish("home/door","CLOSE");
+}
 
