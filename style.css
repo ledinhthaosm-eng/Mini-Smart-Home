@@ -182,3 +182,25 @@ body{
   text-align:center;
 }
 
+/* LOGIN STYLE */
+.login-box{
+  width:300px;
+  margin:100px auto;
+  padding:20px;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 0 10px rgba(0,0,0,0.2);
+  text-align:center;
+}
+.login-box input{
+  width:90%;
+  padding:10px;
+  margin:10px 0;
+}
+.login-box button{
+  padding:10px 20px;
+}
+#error{
+  color:red;
+}
+
