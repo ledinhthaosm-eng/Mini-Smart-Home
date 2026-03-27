@@ -1,7 +1,5 @@
 
 let states={}
-let tempGauge;
-let humiGauge;
 
 // ===== Kết nối MQTT =====
 const client = mqtt.connect(
@@ -53,15 +51,14 @@ client.on("message",function(topic,message){
 
   if(topic=="home/living/temperature"){
     document.getElementById("living_temp").innerText=msg+" °C"
-    // addTemp(parseFloat(msg))
 
-    updateTempGauge(parseFloat(msg))
+    updateTemperature(parseFloat(msg))
   }
 
   if(topic=="home/living/humidity"){
     document.getElementById("living_humi").innerText=msg+" %"
 
-    updateHumiGauge(parseFloat(msg))
+    updateHumidity(parseFloat(msg))
   }
 
   if(topic=="home/door/state"){
@@ -110,6 +107,7 @@ function sendDevice(device, state){
     client.publish("home/kitchen/light/set",msg);
 }
 
+window.onload = function(){
 // ===== BUTTON CLICK =====
     let buttons = document.querySelectorAll(".device-btn");
     buttons.forEach(function(btn){
@@ -123,64 +121,22 @@ function sendDevice(device, state){
         console.log(device, newState); // Debug
       };
     });
-
-window.onload = function(){
-// Java Script tạo gauge
-// ===== TEMP GAUGE =====
-tempGauge = new Chart(document.getElementById("tempGauge"),{
-  type:"doughnut",
-  data:{
-    datasets:[{
-      data:[0,50],
-      backgroundColor:["red","#eee"],
-      borderWidth:0
-    }]
-  },
-  options:{
-    rotation:-90,
-    circumference:180,
-    cutout:"70%",
-    plugins:{legend:{display:false}}
-  }
-})
-
-// ===== HUMI GAUGE =====
-humiGauge = new Chart(document.getElementById("humiGauge"),{
-  type:"doughnut",
-  data:{
-    datasets:[{
-      data:[0,100],
-      backgroundColor:["blue","#eee"],
-      borderWidth:0
-    }]
-  },
-  options:{
-    rotation:-90,
-    circumference:180,
-    cutout:"70%",
-    plugins:{legend:{display:false}}
-  }
-})
-
 }
 
-// Hàm cập nhật dữ liệu gauge
-function updateTempGauge(temp){
+// Hàm cập nhật dữ liệu nhiệt độ - độ ẩm
+function updateTemperature(temp){
 
-  if(!tempGauge) return;
-  document.getElementById("tempValue").innerText=temp+" °C"
+  let el = document.getElementById("tempValue");
+  if(!el) return;
 
-  tempGauge.data.datasets[0].data=[temp,50-temp]
-  tempGauge.update()
+  el.innerText = temp + " °C";
 }
 
-function updateHumiGauge(humi){
+function updateHumidity(humi){
+  let el = document.getElementById("humiValue");
+  if(!el) return;
 
-   if(!humiGauge) return;
-  document.getElementById("humiValue").innerText=humi+" %"
-
-  humiGauge.data.datasets[0].data=[humi,100-humi]
-  humiGauge.update()
+  el.innerText = humi+" %";
 }
 
 
@@ -211,5 +167,39 @@ function openDoor(){
 // Hàm gửi lệnh đóng cửa
 function closeDoor(){
   client.publish("home/door","CLOSE");
+}
+
+// ===== USER & PASSWORD =====
+const USER = "admin";
+const PASS = "123456";
+
+// ===== LOGIN FUNCTION =====
+function login(){
+  let u = document.getElementById("username").value;
+  let p = document.getElementById("password").value;
+
+  if(u === USER && p === PASS){
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("mainPage").style.display = "block";
+
+    // lưu trạng thái đăng nhập để cho phép AUTO LOGIN
+    localStorage.setItem("login","true");
+  }else{
+    document.getElementById("error").innerText = "Sai tài khoản hoặc mật khẩu!";
+  }
+}
+
+// ===== AUTO LOGIN =====
+//window.onload = function(){
+//  if(localStorage.getItem("login") === "true"){
+//    document.getElementById("loginPage").style.display = "none";
+//    document.getElementById("mainPage").style.display = "block";
+//  }
+//}
+
+// ===== LOGOUT FUNCTION =====
+function logout(){
+  localStorage.removeItem("login");
+  location.reload();
 }
 
